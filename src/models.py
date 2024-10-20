@@ -1,8 +1,5 @@
-import os
-import sys
 from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy import create_engine
 from eralchemy2 import render_er
 
 Base = declarative_base()
@@ -44,9 +41,9 @@ class Character(Base):
 
     favs = relationship("Fav", back_populates="character")
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="characters")
+    user = relationship("User", back_populates="character")
     planet_id = Column(Integer, ForeignKey('planet.id'))
-    planet = relationship("Planet", back_populates="characters")
+    planet = relationship("Planet", back_populates="character")
 
 
 class Fav(Base):
