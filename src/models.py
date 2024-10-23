@@ -4,57 +4,51 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = 'user'
+class Usuario(Base):
+    __tablename__ = 'USUARIO'
     
     id = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True, nullable=False)
-    firstname = Column(String(50), nullable=False)
-    lastname = Column(String(50), nullable=False)
+    nombre = Column(String(50), nullable=False)
+    apellido = Column(String(50), nullable=False)
     email = Column(String(50), unique=True, nullable=False)
     password = Column(String(50), nullable=False)  
-    address = Column(String(50), nullable=False) 
-    phone = Column(String(50), nullable=False) 
-    date = Column(Date(), unique=True, nullable=False)
+    direccion = Column(String(50), nullable=False) 
+    telefono = Column(String(50), nullable=False) 
+    fecha_subscripcion = Column(Date(), nullable=False)
 
-    favs = relationship("Fav", back_populates="user")
-    characters = relationship("Character", back_populates="user")
+    favoritos = relationship("Favorito", back_populates="usuario")
 
 
-class Planet(Base):
-    __tablename__ = 'planet'
+class Planeta(Base):
+    __tablename__ = 'PLANETA'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False, unique=True)  
-    description = Column(String(200), nullable=True)
+    nombre = Column(String(50), nullable=False, unique=True)  
+    descripcion = Column(String(200), nullable=True)
 
-    favs = relationship("Fav", back_populates="planet")
-    characters = relationship("Character", back_populates="planet")
+    favoritos = relationship("Favorito", back_populates="planeta")
      
 
-class Character(Base):
-    __tablename__ = 'character'
+class Personaje(Base):
+    __tablename__ = 'PERSONAJE'
     
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False, unique=True)  
-    description = Column(String(200), nullable=True) 
+    nombre = Column(String(50), nullable=False, unique=True)  
+    descripcion = Column(String(200), nullable=True) 
 
-    favs = relationship("Fav", back_populates="character")
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="character")
-    planet_id = Column(Integer, ForeignKey('planet.id'))
-    planet = relationship("Planet", back_populates="character")
+    favoritos = relationship("Favorito", back_populates="personaje")
 
 
-class Fav(Base):
-    __tablename__ = 'fav'
+class Favorito(Base):
+    __tablename__ = 'FAVORITO'
     
-    id_user = Column(Integer, ForeignKey('user.id'), primary_key=True)
-    id_character = Column(Integer, ForeignKey('character.id'), primary_key=True)
-    id_planet = Column(Integer, ForeignKey('planet.id'), primary_key=True)
+    usuario_id = Column(Integer, ForeignKey('USUARIO.id'), primary_key=True)
+    personaje_id = Column(Integer, ForeignKey('PERSONAJE.id'), primary_key=True, nullable=True)
+    planeta_id = Column(Integer, ForeignKey('PLANETA.id'), primary_key=True, nullable=True)
 
-    user = relationship("User", back_populates="favs")
-    character = relationship("Character", back_populates="favs")
-    planet = relationship("Planet", back_populates="favs")
+    usuario = relationship("Usuario", back_populates="favoritos")
+    personaje = relationship("Personaje", back_populates="favoritos")
+    planeta = relationship("Planeta", back_populates="favoritos")
 
-render_er(Base, 'diagram.png')
+render_er(Base, 'diagrama.png')
